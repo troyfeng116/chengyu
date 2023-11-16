@@ -1,15 +1,14 @@
 import requests
-import bs4
 
 from bs4 import BeautifulSoup, element
 from typing import List, Union
-
 
 # URL = "http://www.zd9999.com/cy/index.htm"
 # URL = "http://www.zd9999.com/cy/htm0/1.htm"
 # URL = "http://www.zd9999.com/cy/htm0/4.htm"
 
-START_PATH = "/cy/htm0/1000.htm"
+
+START_PATH = "/cy/htm0/1.htm"
 BASE_URL = "http://www.zd9999.com"
 
 
@@ -43,17 +42,3 @@ def scrape(path: str) -> Union[str, None]:
         return next_link_href
     except:
         return None
-
-
-def main() -> int:
-    path = START_PATH
-    num_scraped = 0
-    while path is not None and num_scraped < 89:
-        path = scrape(path=path)
-        num_scraped += 1
-
-    return 0
-
-
-if __name__ == "__main__":
-    exit(main())
