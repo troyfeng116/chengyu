@@ -12,7 +12,7 @@ START_PATH = "/cy/htm0/1.htm"
 BASE_URL = "http://www.zd9999.com"
 
 
-def scrape(path: str) -> Union[str, None]:
+def scrape_chengyu(path: str) -> Union[str, None]:
     res = requests.get(f"{BASE_URL}/{path}")
     if res.status_code != 200:
         print(f"error: {res.status_code} reason={res.reason}")
