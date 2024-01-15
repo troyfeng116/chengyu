@@ -1,4 +1,4 @@
-from src.scraping.scrape import scrape, START_PATH
+from scrape import scrape, START_PATH
 
 
 def main() -> int:
