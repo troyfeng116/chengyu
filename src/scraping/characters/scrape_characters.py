@@ -1,35 +1,12 @@
 import requests
 
 from bs4 import BeautifulSoup, element
-from typing import List, Tuple, Union
+from typing import List, Union
+
+from src.models.character import Character
 
 BASE_CHARACTERS_URL = "http://hanzidb.org"
 BASE_CHARACTERS_PATH = "/character-list"
-
-
-class Character:
-    char: str
-    pinyin: Union[str, None]
-    definition: Union[str, None]
-    stroke_count: int
-
-    def __init__(
-        self,
-        char: str,
-        pinyin: Union[str, None],
-        definition: Union[str, None],
-        stroke_count: int,
-    ):
-        self.char = char
-        self.pinyin = pinyin if pinyin else None
-        self.definition = definition if definition else None
-        self.stroke_count = stroke_count
-
-    def __str__(self) -> str:
-        return f"{self.char} ({self.pinyin}, {self.stroke_count}): {self.definition}"
-
-    def __repr__(self) -> str:
-        return str(self)
 
 
 def format_path(page_number: int) -> str:

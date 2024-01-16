@@ -1,7 +1,9 @@
 import requests
 
 from bs4 import BeautifulSoup, element
-from typing import List, Union
+from typing import List, Tuple, Union
+
+from src.models.chengyu import ChengYu
 
 # URL = "http://www.zd9999.com/cy/index.htm"
 # URL = "http://www.zd9999.com/cy/htm0/1.htm"
@@ -12,11 +14,13 @@ START_PATH = "/cy/htm0/1.htm"
 BASE_URL = "http://www.zd9999.com"
 
 
-def scrape_chengyu_from_page(path: str) -> Union[str, None]:
+def scrape_chengyu_from_page(
+    path: str,
+) -> Tuple[Union[ChengYu, None], Union[str, None]]:
     res = requests.get(f"{BASE_URL}/{path}")
     if res.status_code != 200:
         print(f"error: {res.status_code} reason={res.reason}")
-        return None
+        return None, None
 
     html = res.content.decode("gbk", "ignore")
     soup = BeautifulSoup(html, "html.parser")
@@ -25,30 +29,40 @@ def scrape_chengyu_from_page(path: str) -> Union[str, None]:
     rows: List[element.Tag] = table.findChildren("tr")
 
     first_row: element.Tag = rows[0]
-    cheng_yu = first_row.findChild("td").findChild("font").findChild("b").getText()
+    chengyu_chars = first_row.get_text().strip()
 
     second_row: element.Tag = rows[1]
     nested_rows: List[element.Tag] = second_row.findChild("td").findChildren("tr")
-    pinyin = nested_rows[0].findChildren("td")[1].getText()
-    fanyi = nested_rows[1].findChildren("td")[1].getText()
+    pinyin = nested_rows[0].findChildren("td")[1].getText().strip()
+    fanyi = nested_rows[1].findChildren("td")[1].getText().strip()
+    source = nested_rows[2].findChildren("td")[1].getText().strip()
+    example = nested_rows[3].findChildren("td")[1].getText().strip()
 
-    print(f"{path} -> {cheng_yu}: {pinyin} -> {fanyi}")
+    # print(f"{path} -> {chengyu_chars}: {pinyin} -> {fanyi}")
+    chengyu = ChengYu(
+        chars=chengyu_chars,
+        pinyin=pinyin,
+        definition=fanyi,
+        source=source,
+        example=example,
+    )
 
     try:
         last_row: element.Tag = rows[-1]
         last_cell: element.Tag = last_row.findChildren("td")[-1]
         next_link_el: element.Tag = last_cell.findChild("a")
         next_link_href = next_link_el.get("href")
-        return next_link_href
+        return chengyu, next_link_href
     except:
-        return None
+        return None, None
 
 
-def scrape_all_chengyu() -> List[str]:
+def scrape_all_chengyu() -> List[ChengYu]:
     path = START_PATH
-    num_scraped = 0
-    while path is not None and num_scraped < 89:
-        path = scrape_chengyu_from_page(path=path)
-        num_scraped += 1
+    all_chengyu = []
+    while path is not None and len(all_chengyu) < 9:
+        chengyu, path = scrape_chengyu_from_page(path=path)
+        if chengyu is not None:
+            all_chengyu.append(chengyu)
 
-    return []
+    return all_chengyu
