@@ -1,12 +1,10 @@
-from scrape_chengyu import scrape_chengyu, START_PATH
+from src.scraping.chengyu.scrape_chengyu import scrape_all_chengyu
 
 
 def main() -> int:
-    path = START_PATH
-    num_scraped = 0
-    while path is not None and num_scraped < 89:
-        path = scrape_chengyu(path=path)
-        num_scraped += 1
+    all_chengyu = scrape_all_chengyu()
+    for c in all_chengyu:
+        print(c)
 
     return 0
 

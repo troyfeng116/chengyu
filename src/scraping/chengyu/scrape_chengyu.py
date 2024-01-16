@@ -12,13 +12,13 @@ START_PATH = "/cy/htm0/1.htm"
 BASE_URL = "http://www.zd9999.com"
 
 
-def scrape_chengyu(path: str) -> Union[str, None]:
+def scrape_chengyu_from_page(path: str) -> Union[str, None]:
     res = requests.get(f"{BASE_URL}/{path}")
     if res.status_code != 200:
         print(f"error: {res.status_code} reason={res.reason}")
         return None
 
-    html = res.content.decode("gb2312", "ignore")
+    html = res.content.decode("gbk", "ignore")
     soup = BeautifulSoup(html, "html.parser")
 
     table: element.Tag = soup.find_all("table")[-3]
@@ -42,3 +42,13 @@ def scrape_chengyu(path: str) -> Union[str, None]:
         return next_link_href
     except:
         return None
+
+
+def scrape_all_chengyu() -> List[str]:
+    path = START_PATH
+    num_scraped = 0
+    while path is not None and num_scraped < 89:
+        path = scrape_chengyu_from_page(path=path)
+        num_scraped += 1
+
+    return []
