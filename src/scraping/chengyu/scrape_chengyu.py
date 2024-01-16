@@ -1,9 +1,8 @@
-import requests
-
 from bs4 import BeautifulSoup, element
 from typing import List, Tuple, Union
 
 from src.models.chengyu import ChengYu
+from src.scraping.fetch import get_url
 
 # URL = "http://www.zd9999.com/cy/index.htm"
 # URL = "http://www.zd9999.com/cy/htm0/1.htm"
@@ -17,9 +16,8 @@ BASE_URL = "http://www.zd9999.com"
 def scrape_chengyu_from_page(
     path: str,
 ) -> Tuple[Union[ChengYu, None], Union[str, None]]:
-    res = requests.get(f"{BASE_URL}/{path}")
-    if res.status_code != 200:
-        print(f"error: {res.status_code} reason={res.reason}")
+    res = get_url(f"{BASE_URL}{path}")
+    if res is None:
         return None, None
 
     html = res.content.decode("gbk", "ignore")

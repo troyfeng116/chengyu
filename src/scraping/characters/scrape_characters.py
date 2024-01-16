@@ -1,9 +1,8 @@
-import requests
-
 from bs4 import BeautifulSoup, element
 from typing import List, Union
 
 from src.models.character import Character
+from src.scraping.fetch import get_url
 
 BASE_CHARACTERS_URL = "http://hanzidb.org"
 BASE_CHARACTERS_PATH = "/character-list"
@@ -33,11 +32,8 @@ def extract_character(row: element.Tag) -> Union[Character, None]:
 
 
 def scrape_characters_from_page(path: str) -> List[Character]:
-    res = requests.get(f"{BASE_CHARACTERS_URL}{path}")
-    if res.status_code != 200:
-        print(
-            f"error ({BASE_CHARACTERS_URL}{path}): {res.status_code} reason={res.reason}"
-        )
+    res = get_url(url=f"{BASE_CHARACTERS_URL}{path}")
+    if res is None:
         return []
 
     html = res.content.decode("utf-8", "ignore")
