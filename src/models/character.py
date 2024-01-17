@@ -1,3 +1,5 @@
+import json
+
 from typing import Union
 
 
@@ -24,3 +26,26 @@ class Character:
 
     def __repr__(self) -> str:
         return str(self)
+
+    def to_json_str(self) -> str:
+        d = {
+            "char": self.char,
+            "pinyin": self.pinyin,
+            "definition": self.definition,
+            "stroke_count": self.stroke_count,
+        }
+        return json.dumps(d)
+
+    @staticmethod
+    def from_json_str(json_str: str) -> Union["Character", None]:
+        try:
+            json_dict = json.loads(json_str)
+            return Character(
+                char=json_dict["char"],
+                pinyin=json_dict["pinyin"],
+                definition=json_dict["definition"],
+                stroke_count=json_dict["stroke_count"],
+            )
+        except Exception as e:
+            print(f"[character] error reading {json_str} into Character: {e}")
+            return None
