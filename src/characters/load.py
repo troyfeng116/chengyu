@@ -1,7 +1,7 @@
 from typing import List
 
-from src.models.character import Character
-from src.data.characters.fetch_and_store import CHARS_FILENAME, CHARACTER_ENCODING
+from src.characters.model import Character
+from src.characters.fetch_and_store import CHARS_FILENAME, CHARACTER_ENCODING
 
 
 def load() -> List[Character]:

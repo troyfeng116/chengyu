@@ -1,6 +1,6 @@
 import os
 
-from src.scraping.characters.scrape_characters import (
+from src.characters.scraper import (
     scrape_all_characters,
     CHARACTER_ENCODING,
 )

@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup, element
 from typing import List, Tuple, Union
 
-from src.models.chengyu import ChengYu
-from src.scraping.fetch import get_url
+from src.chengyu.model import ChengYu
+from src.utils.fetch import get_url
 
 # URL = "http://www.zd9999.com/cy/index.htm"
 # URL = "http://www.zd9999.com/cy/htm0/1.htm"
@@ -51,7 +51,8 @@ def scrape_chengyu_from_page(
         next_link_el: element.Tag = last_cell.findChild("a")
         next_link_href = next_link_el.get("href")
         return chengyu, next_link_href
-    except:
+    except Exception as e:
+        print(f"[scrape_chengyu] error extracting chengyu from {path}: {e}")
         return None, None
 
 

@@ -4,4 +4,4 @@ tmp/
 
 **__pycache__
 
-src/data/**/*.jsonl
+**/*.jsonl

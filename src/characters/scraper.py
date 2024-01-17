@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup, element
 from typing import List, Union
 
-from src.models.character import Character
-from src.scraping.fetch import get_url
+from src.characters.model import Character
+from src.utils.fetch import get_url
 
 BASE_CHARACTERS_URL = "http://hanzidb.org"
 BASE_CHARACTERS_PATH = "/character-list"

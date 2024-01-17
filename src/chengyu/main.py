@@ -1,4 +1,4 @@
-from src.scraping.chengyu.scrape_chengyu import scrape_all_chengyu
+from src.chengyu.scraper import scrape_all_chengyu
 
 
 def main() -> int:
