@@ -4,9 +4,9 @@ from src.characters.load import load
 
 def main() -> int:
     # fetch_and_store_all()
-    chars = load()
-    for i in range(10):
-        print(chars[i])
+    all_chars = load()
+    for i in range(min(10, len(all_chars))):
+        print(all_chars[i])
     return 0
 
 

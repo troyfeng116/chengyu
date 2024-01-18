@@ -11,6 +11,7 @@ from src.utils.fetch import get_url
 
 START_PATH = "/cy/htm0/1.htm"
 BASE_URL = "http://www.zd9999.com"
+CHENGYU_ENCODING = "gbk"
 
 
 def scrape_chengyu_from_page(
@@ -20,7 +21,7 @@ def scrape_chengyu_from_page(
     if res is None:
         return None, None
 
-    html = res.content.decode("gbk", "ignore")
+    html = res.content.decode(CHENGYU_ENCODING, "ignore")
     soup = BeautifulSoup(html, "html.parser")
 
     table: element.Tag = soup.find_all("table")[-3]
@@ -59,9 +60,13 @@ def scrape_chengyu_from_page(
 def scrape_all_chengyu() -> List[ChengYu]:
     path = START_PATH
     all_chengyu = []
-    while path is not None and len(all_chengyu) < 9:
+    scraped = 0
+    while path is not None:
+        if scraped % 100 == 0:
+            print(scraped)
         chengyu, path = scrape_chengyu_from_page(path=path)
         if chengyu is not None:
             all_chengyu.append(chengyu)
+            scraped += 1
 
     return all_chengyu

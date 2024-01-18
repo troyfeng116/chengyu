@@ -1,11 +1,12 @@
-from src.chengyu.scraper import scrape_all_chengyu
+from src.chengyu.fetch_and_store import fetch_and_store_all
+from src.chengyu.load import load
 
 
 def main() -> int:
-    all_chengyu = scrape_all_chengyu()
-    for c in all_chengyu:
-        print(c)
-
+    # fetch_and_store_all()
+    all_chengyu = load()
+    for i in range(min(10, len(all_chengyu))):
+        print(all_chengyu[i])
     return 0
 
 
